@@ -5,14 +5,15 @@ public class SimpleCalculator {
         // Create a Scanner object to read input
         Scanner scanner = new Scanner(System.in);
 
-        // Display the menu
+        // Display the menu with the multiplication option added
         System.out.println("Simple Calculator");
         System.out.println("Select operation:");
         System.out.println("1. Addition (+)");
         System.out.println("2. Subtraction (-)");
+        System.out.println("3. Multiplication (x)");
 
         // Ask the user to choose an operation
-        System.out.print("Enter the number for the operation (1 or 2): ");
+        System.out.print("Enter the number for the operation (1, 2, or 3): ");
         int operation = scanner.nextInt();
 
         // Ask the user to enter two numbers
@@ -31,6 +32,10 @@ public class SimpleCalculator {
             case 2: // Subtraction
                 result = num1 - num2;
                 System.out.println("Result: " + num1 + " - " + num2 + " = " + result);
+                break;
+            case 3: // Multiplication
+                result = num1 * num2;
+                System.out.println("Result: " + num1 + " * " + num2 + " = " + result);
                 break;
             default:
                 System.out.println("Invalid operation selected.");
