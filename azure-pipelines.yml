@@ -1,28 +1,32 @@
 trigger:
-- main
+- master
 
 pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-  inputs:
-    versionSpec: '21.0.5'  
-    jdkArchitecture: 'x64'
+  # Install OpenJDK 11
+  - script: |
+      sudo apt-get update
+      sudo apt-get install openjdk-11-jdk -y
+      java -version  # Verify the Java version after installation
+    displayName: 'Install Java OpenJDK 11'
 
-- script: |
-    - script: |
-    sudo apt-get update
-    sudo apt-get install openjdk-11-jdk -y  # Or any version you prefer
-    java -version
-  displayName: 'Install Java and Check Version'
+  # Build the Java application using Maven (or Gradle if preferred)
+  - script: |
+      echo "Building the Java calculator application"
+      ./mvnw clean install  # Use `./gradlew build` if using Gradle
+    displayName: 'Build Java calculator App'
 
-- task: CopyFiles@2
-  inputs:
-    contents: '**/*.jar'  
-    targetFolder: '$(build.artifactStagingDirectory)'
+  # Copy generated JAR files to the artifact staging directory
+  - task: CopyFiles@2
+    inputs:
+      contents: '**/*.jar'  # Assuming the build produces JAR files
+      targetFolder: '$(Build.ArtifactStagingDirectory)'  # Correct path to artifact staging directory
 
-- task: PublishBuildArtifacts@1
-  inputs:
-    pathToPublish: '$(Build.ArtifactStagingDirectory)'
-    artifactName: 'drop'
+  # Publish the build artifacts
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathToPublish: '$(Build.ArtifactStagingDirectory)'  # Path to the staged artifacts
+      artifactName: 'drop'  # Artifact name, can be customized
 
