@@ -1,0 +1,27 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: UseJavaToolInstaller@1
+  inputs:
+    versionSpec: '21.0.5'  
+    jdkArchitecture: 'x64'
+
+- script: |
+    echo "Building the calculator application"
+    ./mvnw clean install  # If you use Maven, adjust for Gradle if that's your build tool
+  displayName: 'Build Java calculator App'
+
+- task: CopyFiles@2
+  inputs:
+    contents: '**/*.jar'  
+    targetFolder: '$(build.artifactStagingDirectory)'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: '$(Build.ArtifactStagingDirectory)'
+    artifactName: 'drop'
+
