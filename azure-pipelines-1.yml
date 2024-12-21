@@ -3,15 +3,17 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-steps:
-- task: UseJavaToolInstaller@1
-  inputs:
-    versionSpec: '21.0.5'  # You can specify the desired Java version, like 11 or 17
-    jdkArchitecture: 'x64'
+
 
 - script: |
     echo "Building the Java calculator application"
     ./mvnw clean install  # If you use Maven, adjust for Gradle if that's your build tool
+    - script: |
+    sudo apt-get update
+    sudo apt-get install openjdk-11-jdk -y  # Or any version you prefer
+    java -version
+  displayName: 'Install Java and Check Version'
+
   displayName: 'Build Java calculator App'
 
 - task: CopyFiles@2
