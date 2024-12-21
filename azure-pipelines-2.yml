@@ -1,0 +1,27 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+# Set up Java version
+- task: UseJavaVersion@1
+  inputs:
+    versionSpec: '11'  # Specify your desired Java version (e.g., 11 or 17)
+    addToPath: true
+
+# Set up Gradle (use Gradle wrapper if available)
+- task: Gradle@2
+  inputs:
+    gradleWrapperFile: './gradlew'  
+    - task: CopyFiles@2
+  inputs:
+    contents: '**/*.jar'   
+    targetFolder: '$(Build.ArtifactStagingDirectory)'  
+
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: '$(Build.ArtifactStagingDirectory)'
+    artifactName: 'drop'  
