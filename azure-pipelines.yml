@@ -11,9 +11,11 @@ steps:
     jdkArchitecture: 'x64'
 
 - script: |
-    echo "Building the calculator application"
-    ./mvnw clean install  # If you use Maven, adjust for Gradle if that's your build tool
-  displayName: 'Build Java calculator App'
+    - script: |
+    sudo apt-get update
+    sudo apt-get install openjdk-11-jdk -y  # Or any version you prefer
+    java -version
+  displayName: 'Install Java and Check Version'
 
 - task: CopyFiles@2
   inputs:
